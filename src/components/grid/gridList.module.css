@@ -1,0 +1,11 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* kích thước tối thiểu và tối đa của mỗi cột*/
+    gap: 20px; /*khoang cach giua cac cot*/
+}
+
+.item {
+    background-color: rgb(163, 163, 226);
+    padding: 20px;
+    border-radius: 5px;
+}
