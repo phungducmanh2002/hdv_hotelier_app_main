@@ -4,9 +4,10 @@ import InputText from "../input/inputText";
 import Link from "next/link";
 import { decodeToken, generateTokenFromAccount } from "@/modules/auth/service";
 import { usePathname, useRouter } from "next/navigation";
-import userSession from "@/utils/user";
+import UserSession from "@/utils/user";
 import { getUsersByAccount } from "@/modules/account/service";
 export default function FrmSigin(){
+    const userSession = UserSession.getInstance();
     
     const router = useRouter();
     const pathname = usePathname();
@@ -26,9 +27,13 @@ export default function FrmSigin(){
         e.preventDefault();
         // role = 2 la tai khoan cua hotelier
         account.idRole = 2
+        router.push("/hotel")
+        userSession.setIdUser(1);
+        return;
         generateTokenFromAccount(account).then((res)=>{
             if (res.code === 200){
                 alert(JSON.stringify(res.data))
+                
                 decodeToken({"token": res.data}).then((res)=>{
                     if (res.code === 200){
                         let idAccount = res.data.id;

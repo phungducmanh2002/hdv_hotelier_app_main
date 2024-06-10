@@ -4,8 +4,8 @@ import axios from "axios";
 import UserSession from "./user"
 
 
-const baseURL = process.env.NEXT_PUBLIC_HOTEL_SERVICE_API_BASE_URL 
-// ? '' :"http://localhost:8080/hotel";
+const baseURL = process.env.NEXT_PUBLIC_LOCATION_SERVICE_API_BASE_URL 
+// ? '' :"http://localhost:8080/location";
 console.log(baseURL)
 const instance = axios.create({ baseURL: baseURL, timeout: 5000, headers: { 'Content-Type': 'application/json' } });
 

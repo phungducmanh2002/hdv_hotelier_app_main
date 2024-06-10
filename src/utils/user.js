@@ -1,11 +1,13 @@
 class UserSession {
   constructor() {
-    if (UserSession.instance) {
-      return UserSession.instance;
-    }
-
     this.idUser = null;
-    UserSession.instance = this;
+  }
+
+  static getInstance() {
+    if (!UserSession.instance) {
+      UserSession.instance = new UserSession();
+    }
+    return UserSession.instance;
   }
 
   setIdUser(idUser) {
@@ -21,8 +23,5 @@ class UserSession {
   }
 }
 
-// Đảm bảo rằng class chỉ có một instance
-const instance = new UserSession();
-Object.freeze(instance);
 
-export default instance;
+export default UserSession;

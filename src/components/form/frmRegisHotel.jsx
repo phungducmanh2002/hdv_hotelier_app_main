@@ -1,10 +1,13 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import InputText from "../input/inputText"
-
+import UserSession from "@/utils/user"
 import Combobox from "../combobox"
 import ButtonCustom from "../button/button"
+import { allProvinces } from "@/modules/province/service"
 export default function FrmRegisHotel(){
+    const userSession = UserSession.getInstance();
+    const user = userSession.getIdUser();
     const [newHotel, setNewHotel] = useState({
         name: '',
         description: '',
@@ -18,7 +21,19 @@ export default function FrmRegisHotel(){
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
     const [reload, setReload] = useState(false);
+    const [imageFile, setImageFile] = useState();
+    const [imagePreview, setImagePreview] = useState();
 
+    useEffect(()=>{
+      allProvinces().then((res)=>{
+        if (res.code === 200){
+          setProvinces(res.data.map((province)=>({
+            label: province.name,
+            value: province.id
+          } )));
+        }
+      })
+    });
     const handleChangeProvince = (e) => {
         const { name, value } = e.target;
         setProvince(value);
@@ -66,16 +81,32 @@ export default function FrmRegisHotel(){
         // setAddress('');
         // setPhone('');
       };
+    const handleImageChange = (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0]
+        setImageFile(file);
+        setImagePreview(URL.createObjectURL(file));
+      }
+    };
     return(
         <div className='flex h-screen justify-center items-start'>
             <form onSubmit={handleSubmit} className={` bg-blue-300 p-4 border-2 rounded-md`}>
-                <InputText label="Tên khách sạn" type="text" name="name" value={newHotel.name} onChange={handleChange}></InputText>
-                <InputText label="Mô tả" type="text" name="description" value={newHotel.description} onChange={handleChange}></InputText>
-                <InputText label="Số điện thoại liên hệ" type="tel" name="hotline" value={newHotel.hotline} onChange={handleChange}></InputText>
-                <Combobox options={provinces} label="Chọn tỉnh:" onChange={handleChangeProvince} name="provinceId" />
-                <Combobox options={districts} label="Chọn quận:" onChange={handleChangeDistrict} name="districtId" />
-                <Combobox options={communes} label="Chọn phường:" onChange={handleChange} name="idCommune" />
-                <ButtonCustom label="Lưu đăng ký" submit={1}></ButtonCustom>
+              <div className="mb-2 flex justify-between">
+                <label htmlFor="image">Hình ảnh khách sạn:</label>
+                <input className="w-40" type="file" id="image" accept=".png, .jpg" onChange={handleImageChange} required />
+              </div>
+              {imagePreview && (
+                <div className="flex justify-center mb-2">
+                  <img className="border-2 rounded-md" src={imagePreview} alt="Hotel Image Preview" style={{ width: '200px', height: '200px' }} />
+                </div>
+              )}
+              <InputText label="Tên khách sạn" type="text" name="name" value={newHotel.name} onChange={handleChange}></InputText>
+              <InputText label="Mô tả" type="text" name="description" value={newHotel.description} onChange={handleChange}></InputText>
+              <InputText label="Số điện thoại liên hệ" type="tel" name="hotline" value={newHotel.hotline} onChange={handleChange}></InputText>
+              <Combobox options={provinces} label="Chọn tỉnh/thành phố:" onChange={handleChangeProvince} name="provinceId" />
+              <Combobox options={districts} label="Chọn quận:" onChange={handleChangeDistrict} name="districtId" />
+              <Combobox options={communes} label="Chọn phường:" onChange={handleChange} name="idCommune" />
+              <ButtonCustom label="Lưu đăng ký" submit={1}></ButtonCustom>
             </form>
         </div>
     )
