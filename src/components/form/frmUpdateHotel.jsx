@@ -7,9 +7,9 @@ import ButtonCustom from "../button/button"
 import district from '../../../../hdv_location_service_main/data/district.json';
 import { allProvinces, getDistrictsByProvince } from "@/modules/provinces/service"
 import { getCommuneByDistrict } from "@/modules/districts/service"
-import { createHotel, createImageForHotel } from "@/modules/hotels/service"
+import { createHotel, createImageForHotel, getHotelById } from "@/modules/hotels/service"
 import { useRouter } from "next/navigation"
-export default function FrmRegisHotel(){
+export default function FrmUpdateHotel({params}){
     const userSession = UserSession.getInstance();
     const user = userSession.getIdUser();
     const router = useRouter();
@@ -26,9 +26,18 @@ export default function FrmRegisHotel(){
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
     const [reload, setReload] = useState(false);
-    const [imageFile, setImageFile] = useState();
-    const [imagePreview, setImagePreview] = useState();
-    
+
+    useEffect(()=>{
+        getHotelById(params.hotelId).then((res)=>{
+            if (res.code === 200){
+                const data = res.data;
+                const {id, name, description, hotline, idUser, idCommune} = res.data
+                
+                setNewHotel({name, description, hotline, idUser, idCommune})
+            }
+            
+        })
+    }, [])
     useEffect(()=>{
       allProvinces().then((res)=>{
         if (res.code === 200){
@@ -96,7 +105,7 @@ export default function FrmRegisHotel(){
         // hotelData.hotelierId = user;
         // console.log(newHotel);
         newHotel.idUser = user
-        
+        return 
         createHotel(newHotel).then((res) => {
           alert(JSON.stringify(res))
           if (res.code === 201){
@@ -137,17 +146,8 @@ export default function FrmRegisHotel(){
       }
     };
     return(
-        <div className='flex h-screen justify-center items-start'>
-            <form onSubmit={handleSubmit} className={` bg-blue-300 p-4 border-2 rounded-md`}>
-              <div className="mb-2 flex justify-between">
-                <label htmlFor="image">Hình ảnh khách sạn:</label>
-                <input className="w-40" type="file" id="image" accept=".png, .jpg" onChange={handleImageChange} required />
-              </div>
-              {imagePreview && (
-                <div className="flex justify-center mb-2">
-                  <img className="border-2 rounded-md" src={imagePreview} alt="Hotel Image Preview" style={{ width: '200px', height: '200px' }} />
-                </div>
-              )}
+        <div className='flex justify-start'>
+            <form onSubmit={handleSubmit} className={` bg-blue-300 p-4 border-2 rounded-md w-96`}>
               <InputText label="Tên khách sạn" type="text" name="name" value={newHotel.name} onChange={handleChange}></InputText>
               <InputText label="Mô tả" type="text" name="description" value={newHotel.description} onChange={handleChange}></InputText>
               <InputText label="Số điện thoại liên hệ" type="tel" name="hotline" value={newHotel.hotline} onChange={handleChange}></InputText>

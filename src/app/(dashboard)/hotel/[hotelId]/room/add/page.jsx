@@ -1,7 +1,7 @@
 import FrmAddRoom from "@/components/form/frmAddRoom";
 
-export default function PageAddRoom(){
+export default function PageAddRoom({params}){
     return (
-        <FrmAddRoom></FrmAddRoom>
+        <FrmAddRoom params={params}></FrmAddRoom>
     )
 }

@@ -1,5 +1,5 @@
 'use client'
-import { createUser } from "@/modules/account/service";
+import { createUser } from "@/modules/accounts/service";
 import { useState } from "react"
 import InputText from "../input/inputText";
 import Link from "next/link";

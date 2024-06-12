@@ -10,7 +10,9 @@ const colorTextBookingStatus = ["", "text-zinc-500", "text-emerald-500", "text-y
 const colorButtonBookingStatus = ["", "", "bg-emerald-500", "bg-yellow-500", "bg-stone-400", "bg-red-400"]
 import { usePathname } from 'next/navigation';
 import ButtonCustom from '../button/button';
-const FlexibleTable = ({ data, headerNames, onSort , setData, sortConfig, setSortConfig}) => {
+import { updateStatuBooking } from '@/modules/bookings/booking';
+
+const FlexibleTable = ({ data, headerNames, onSort , setData, sortConfig, setSortConfig ,handleChangeStatusBooking}) => {
   if (!data || data.length === 0) return <p>No data available</p>;
 
   // Lấy danh sách các khóa của đối tượng đầu tiên làm tiêu đề bảng
@@ -58,11 +60,22 @@ const FlexibleTable = ({ data, headerNames, onSort , setData, sortConfig, setSor
     });
     setData(sortedRooms);
   };
-  const handleClickBookingStatus = () => {
-    if (window.confirm('Bạn có chắc chắn muốn hủy đặt phòng này?')) {
-      handleCancel(row.id);
-    }
-  }
+  
+  // Hàm định dạng ngày tháng
+  const formatDate = (dateString) => {
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+    };
+    const date = new Date(dateString);
+    console.log(date.toLocaleDateString('en-GB', options).replace(',', ''));
+    return date.toLocaleDateString('en-GB', options).replace(',', '');
+};
   return (
     <>
    
@@ -87,13 +100,23 @@ const FlexibleTable = ({ data, headerNames, onSort , setData, sortConfig, setSor
       <tbody>
         {currentData.map((row, rowIndex) => (
           <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? 'bg-slate-200' : 'bg-slate-300 text-blue-500'}`}>
-            {headers.map((header) => (
-              <td  key={header}
-              className={`text-center p-4 ${header === 'status' ? colorTextBookingStatus[row[header]] : ''}`}
-              >
-                {header === 'status' ?  bookingStatus[row[header]] :row[header]}
-              </td>
-            ))}
+            {headers.map((header) => {
+              let cellContent;
+              if (header === 'status') {
+                  cellContent = bookingStatus[row[header]];
+              } else if (header === 'checkin' || header === 'checkout') {
+                  cellContent = formatDate(row[header]);
+              } else {
+                  cellContent = row[header];
+              }
+              return (
+                <td  key={header}
+                className={`text-center p-4 ${header === 'status' ? colorTextBookingStatus[row[header]] : ''}`}
+                >
+                  {cellContent}
+                </td>
+              )
+            })}
             
             
             <td className='text-center'>
@@ -101,25 +124,28 @@ const FlexibleTable = ({ data, headerNames, onSort , setData, sortConfig, setSor
                 row.status == null && (
                   <div className='flex justify-center'>
 
-                    <ButtonCustom label="Edit" handleClick={handleClickEdit}></ButtonCustom>
+                    <ButtonCustom label="Edit" handleClick={() => handleClickEdit(row.id)}></ButtonCustom>
                   </div>
                 )
               }
+              {/* hàm handleChangeStatusBooking được thực thi với các tham số đúng cách, bạ
+              n cần đảm bảo rằng hàm không được gọi ngay lập tức khi thẻ <button> được render. Thay vào đó, bạn 
+              cần cung cấp một hàm ẩn danh (lambda) để trì hoãn việc gọi hàm cho đến khi sự kiện onClick xảy ra. */}
               {row.status === 1 && (
                 <div className='flex'>
-                  <button className={`${colorButtonBookingStatus[2]} border-white border-2 rounded-md whitespace-nowrap p-2 mr-2 text-black`} onClick={handleClickBookingStatus}>Thanh toán</button>
-                  <button className={`${colorButtonBookingStatus[5]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`}>Hủy đặt</button>
+                  <button className={`${colorButtonBookingStatus[2]} border-white border-2 rounded-md whitespace-nowrap p-2 mr-2 text-black`} onClick={() => handleChangeStatusBooking(row.id, 2)}>Thanh toán</button>
+                  <button className={`${colorButtonBookingStatus[5]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`} onClick={() => handleChangeStatusBooking(row.id, 5)}>Hủy đặt</button>
                 </div>
               )}
               {row.status === 2 && (
                 <div className='flex'>
-                  <button className={`${colorButtonBookingStatus[3]} border-white border-2 rounded-md whitespace-nowrap p-2 mr-2 text-black`}>Checkin</button>
-                  <button className={`${colorButtonBookingStatus[5]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`}>Hủy đặt</button>
+                  <button className={`${colorButtonBookingStatus[3]} border-white border-2 rounded-md whitespace-nowrap p-2 mr-2 text-black`} onClick={() => handleChangeStatusBooking(row.id, 3)}>Checkin</button>
+                  <button className={`${colorButtonBookingStatus[5]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`} onClick={() => handleChangeStatusBooking(row.id, 5)}>Hủy đặt</button>
                 </div>
                 
               )}
               {row.status === 3 && (
-                <button className={`${colorButtonBookingStatus[4]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`}>Checkout</button>
+                <button className={`${colorButtonBookingStatus[4]} border-white border-2 rounded-md whitespace-nowrap p-2 text-black`} onClick={() => handleChangeStatusBooking(row.id, 4)}>Checkout</button>
               )}
             </td>
           </tr>

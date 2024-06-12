@@ -9,15 +9,15 @@ const DropdownMenu = () => {
   const router = useRouter();
   const handleLogout = () => {
     const userSession = UserSession.getInstance();
-    userSession.setUser(null);
+    userSession.setIdUser(null);
     router.push('/sigin')
   }
   return (
     <div className={styles.dropdown}>
       <button className={styles.dropbtn}>Welcome user</button>
       <div className={styles.dropdownContent}>
-        <a href="#">Chang password</a>
-        <Link href="/sigin" onClick={handleLogout}>Log out</Link>
+        
+        <a className='cursor-pointer' onClick={handleLogout}>Log out</a>
       </div>
     </div>
   );

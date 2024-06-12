@@ -1,7 +1,7 @@
 import FrmAddRoomClass from "@/components/form/frmAddRoomClass";
 
-export default function PageAddRoomClass(){
+export default function PageAddRoomClass({params}){
     return(
-        <FrmAddRoomClass></FrmAddRoomClass>
+        <FrmAddRoomClass params={params}></FrmAddRoomClass>
     )
 }

@@ -11,7 +11,7 @@ const Combobox = ({options, label, onChange, name}) => {
   return (
     <div className='flex justify-between items-center mb-2'>
       <label htmlFor="combobox" className='mr-2'>{label}</label>
-      <select id="combobox" value={selectedValue} onChange={handleChange} className='p-1 w-52 border-2 rounded-md bg-white' name={name} >
+      <select id="combobox" value={selectedValue} onChange={handleChange} className='p-1 w-52 border-2 rounded-md bg-white' name={name} required >
         <option value="" disabled>Select an option</option>
         {options.map((option, index) => (
           <option key={index} value={option.value}>

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import InputText from "../input/inputText";
 import Link from "next/link";
-import { createAccount } from "@/modules/account/service";
+import { createAccount } from "@/modules/accounts/service";
 import { useRouter } from "next/navigation";
 export default function FrmSigup(){
     

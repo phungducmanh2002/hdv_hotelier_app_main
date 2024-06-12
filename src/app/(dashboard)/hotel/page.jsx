@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react"
 import UserSession from "@/utils/user"
 import { useEffect } from "react";
-import { findHotelByIdUser } from "@/modules/user/service";
+import { findHotelByIdUser } from "@/modules/users/service";
 const listHotel = [
     {"id": 1, "name": "khach san 1", "hoteline": "012301230123"},
     {"id": 1,"name": "khach san 1", "hotline": "012301230123"},

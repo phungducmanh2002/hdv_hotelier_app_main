@@ -10,3 +10,14 @@ export const allProvinces = async () => {
     }
     
 };
+export const getDistrictsByProvince = async (idProvince) => {
+    try {
+        const response = await api.get(`/provinces/${idProvince}/districts`);
+        
+        return response.data;
+    } catch (error) {
+        console.error('Call API Error:', error);
+        throw error;
+    }
+    
+};

@@ -1,8 +1,13 @@
+import FrmUpdateHotel from "@/components/form/frmUpdateHotel"
+
 const PageManageHotel = ({params}) => {
     return(
-        <>
-            <h1>page hotel {params.hotelId}</h1>
-        </>
+        <div className="border-2 border-white flex justify-between">
+            <div className="w-screen">hinh</div>
+            <div className="">
+                <FrmUpdateHotel params={params}></FrmUpdateHotel>
+            </div>
+        </div>
     )
 }
 export default PageManageHotel

@@ -7,8 +7,7 @@ import ButtonCustom from "../button/button";
 import { createRoomForHotel, getRoomClassesByHotel } from "@/modules/hotels/service";
 import { usePathname, useRouter } from "next/navigation";
 
-
-export default function FrmAddRoom({params}){
+export default function FrmEditRoom({params}){
     const [newRoom, setNewRoom] = useState({
         'name':'',
     });
@@ -54,9 +53,12 @@ export default function FrmAddRoom({params}){
             }
         })
     }
-    return(
+    return (
         <div className="flex justify-center">
             <form onSubmit={handleSubmit} className={` bg-blue-300 p-4  border-2 rounded-md`}>
+                <div className="flex justify-center">
+                    <div>Chỉnh sửa phòng</div>
+                </div>
                 <InputText label="Nhập tên phòng: " name="name" value={newRoom.name} type="text" onChange={handleChange}></InputText>
                 <Combobox label="Chọn hạng phòng" name="roomClass" value={roomClassId} onChange={handleChangeRoomClassId} options={roomClasses}></Combobox>
                 <ButtonCustom label="Xác nhận" submit={1}></ButtonCustom>

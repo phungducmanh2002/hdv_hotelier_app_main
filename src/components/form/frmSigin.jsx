@@ -5,7 +5,7 @@ import Link from "next/link";
 import { decodeToken, generateTokenFromAccount } from "@/modules/auth/service";
 import { usePathname, useRouter } from "next/navigation";
 import UserSession from "@/utils/user";
-import { getUsersByAccount } from "@/modules/account/service";
+import { getUsersByAccount } from "@/modules/accounts/service";
 export default function FrmSigin(){
     const userSession = UserSession.getInstance();
     

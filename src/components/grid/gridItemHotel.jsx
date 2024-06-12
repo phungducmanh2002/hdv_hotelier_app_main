@@ -16,11 +16,11 @@ const GridItemHotel = ({hotel}) => {
                 <label>Tên khách sạn: </label>
                 <h2>{hotel.name}</h2>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mb-2">
                 <label>Liên hệ: </label>
                 <h2>{hotel.hotline}</h2>
             </div>
-            <button className="border-2 rounde-md"></button>
+           
             <ButtonCustome label="Quản lý khách sạn" handleClick={handleClick}></ButtonCustome>
         </>
     )
