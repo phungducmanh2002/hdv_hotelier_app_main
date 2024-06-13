@@ -105,3 +105,69 @@ export const getRoomsByHotel = async (idHotel) => {
         throw error;
     }
 }
+
+export const updateHotelRoomClass = async (idHotel, idRoomClass, roomClass) => {
+    try{
+        const response = await api_hotel.put(`/hotels/${idHotel}/room-classes/${idRoomClass}`, roomClass);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}
+
+export const getIdImageByHotel = async (idHotel) => {
+    try{
+        const response = await api_res.get(`/hotels/${idHotel}/avatar?type=0`);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}
+
+export const updateHotel = async (idHotel, hotelUpdate) => {
+    try{
+        const response = await api_hotel.put(`/hotels/${idHotel}`, hotelUpdate);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}
+
+export const changeAvatarHotel = async (idHotel, idImage) => {
+    try{
+        const response = await api_res.put(`/hotels/${idHotel}/images/${idImage}/set-avatar`);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}
+
+export const getImagesByHotelId = async (idHotel) => {
+    try{
+        const response = await api_res.get(`/hotels/${idHotel}/images`);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}
+
+export const deleteImageByHotelId = async (idHotel, idImage) => {
+    try{
+        const response = await api_res.delete(`/hotels/${idHotel}/images/${idImage}`);
+        return response.data;
+    }
+    catch (error){
+        console.error('Call API Error:', error);
+        throw error;
+    }
+}

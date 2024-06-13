@@ -1,8 +1,7 @@
 import api_hotel from "@/utils/api_hotel_service"
-export const createRoomClass = async (newRoomClass) => {
+export const getRoomById = async (idRoom) => {
     try {
-        const response = await api_hotel.post(`/room-classes`, newRoomClass);
-        
+        const response = await api_hotel.get(`/rooms/${idRoom}`);
         return response.data;
     } catch (error) {
         console.error('Call API Error:', error);
@@ -10,10 +9,9 @@ export const createRoomClass = async (newRoomClass) => {
     }
     
 };
-export const getRoomClassById = async (idRoomClass) => {
+export const updateRoom = async (idRoom, roomUpdate) => {
     try {
-        const response = await api_hotel.get(`/room-classes/${idRoomClass}`);
-        
+        const response = await api_hotel.put(`/rooms/${idRoom}`, roomUpdate);
         return response.data;
     } catch (error) {
         console.error('Call API Error:', error);

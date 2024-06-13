@@ -45,7 +45,7 @@ export default function FrmApplyRoomClass({params}){
         // alert(JSON.stringify(roomClass))
        
         applyRoomClass(params.hotelId, roomClassSelected, roomClass).then((res)=>{
-            if (res.code === 201){
+            if (res.code == 201){
                 if (window.confirm('Áp dụng hạng phòng mới thành công. Bạn có muốn thêm tiếp?')) {
                     newRoomClass.roomPrice = '';
                 }
@@ -58,8 +58,12 @@ export default function FrmApplyRoomClass({params}){
 
     return (
         <div className="flex justify-center">
+            
             <form onSubmit={handleSubmit} className={` bg-blue-300 p-4 border-2 rounded-md`}>
-                <Combobox label="Chọn hàng phòng: " name="roomClassSelected" value={roomClassSelected} options={roomClasses} onChange={handleChangeRoomClassSelected}></Combobox>
+                <div className="flex justify-center mb-2">
+                    <div className="text-xl">Áp dụng hạng phòng mới</div>
+                </div>
+                <Combobox label="Chọn hạng phòng: " name="roomClassSelected" value={roomClassSelected} options={roomClasses} onChange={handleChangeRoomClassSelected}></Combobox>
                 <InputText label="Nhập giá" name="roomPrice" type="number" value={roomClass.roomPrice} onChange={handleChange}></InputText>
                 <ButtonCustom label="Áp dụng" submit={1}></ButtonCustom>
             </form>

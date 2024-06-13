@@ -4,7 +4,9 @@ import { useState } from "react"
 import InputText from "../input/inputText";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import userSession from "@/utils/user"
+
+
+import UserSession from "@/utils/user"
 export default function FrmCreateUser(){
     const router = useRouter();
     const pathname = usePathname();
@@ -27,15 +29,17 @@ export default function FrmCreateUser(){
         newUser.idRole = 2
         const idAccountlocal = localStorage.getItem('idAccount');
         newUser.idAccount = parseInt(idAccountlocal);
-        alert(JSON.stringify(newUser))
+        // alert(JSON.stringify(newUser))
         createUser(newUser.idAccount, newUser).then((res)=>{
-            if (res === 200){
-                router.push("/hotel")
-                alert("tao user thanh cong! Chuyen den trang dashboard")
+            if (res.code === 200){
+                const userSession = UserSession.getInstance();
                 userSession.setIdUser(res.data.id);
+                alert("tao user thanh cong! Chuyen den trang dashboard")
+                router.push("/hotel")
+                
             }
             else{
-                alert(`${res.message}`)
+                alert(`${res.message}! username đã tồn tại! Vui lòng nhập tên khác`)
             }
            
         })

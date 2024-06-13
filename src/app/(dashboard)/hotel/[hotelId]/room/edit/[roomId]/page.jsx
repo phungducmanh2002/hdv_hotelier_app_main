@@ -1,7 +1,7 @@
 import FrmEditRoom from "@/components/form/frmEditRoom";
 
-export default function PageEditRoom(){
+export default function PageEditRoom({params}){
     return (
-        <FrmEditRoom></FrmEditRoom>
+        <FrmEditRoom params={params}></FrmEditRoom>
     )
 }

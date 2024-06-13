@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import UserSession from "@/utils/user";
 import { getUsersByAccount } from "@/modules/accounts/service";
 export default function FrmSigin(){
-    const userSession = UserSession.getInstance();
     
     const router = useRouter();
     const pathname = usePathname();
@@ -27,47 +26,30 @@ export default function FrmSigin(){
         e.preventDefault();
         // role = 2 la tai khoan cua hotelier
         account.idRole = 2
-        router.push("/hotel")
-        userSession.setIdUser(1);
-        return;
+        // router.push("/hotel")
+        // userSession.setIdUser(1);
+       
         generateTokenFromAccount(account).then((res)=>{
             if (res.code === 200){
-                alert(JSON.stringify(res.data))
+                // alert(JSON.stringify(res.data))
                 
                 decodeToken({"token": res.data}).then((res)=>{
                     if (res.code === 200){
-                        let idAccount = res.data.id;
-                        alert(idAccount)
-                        getUsersByAccount(idAccount).then((res)=>{
-                            if (res.code === 200){
-                                let checkCreateUser = 1;
-                                alert(JSON.stringify(res.data))
-                                res.data.forEach((user) => {
-                                    if (user.idRole == 2){
-                                        checkCreateUser = 0;
-                                        alert("đăng nhập thành công! chuyển đến dashboard")
-                                        
-                                        userSession.setIdUser(user.id);
-                                        router.push("/hotel");
-                                        
-                                      }
-                                });
-                                // kiem tra xem co can tao user khong
-                                if (checkCreateUser == 1){
-                                    router.push(`${pathname}/createUser`)
-                                    localStorage.setItem('idAccount', idAccount);
-                                    
-                                }
-                            }
-                        })
+                        const {id, idAccount, idRole, username} = res.data
+                        // alert(idAccount)
+                        alert("đăng nhập thành công! chuyển đến dashboard")
+                        const userSession = UserSession.getInstance();
+                        userSession.setIdUser(id);
+                        router.push("/hotel");
                     }
                 })
             }
+            else if (res.code === 404){
+                localStorage.setItem('idAccount', res.data.id);
+                router.push(`${pathname}/createUser`)
+            }
             else{
                 alert(`${res.message}`)
-                if (res.message == "user not found"){
-                    router.push(`${pathname}/createUser`)
-                }
             }
         })
         // alert(JSON.stringify(account));
